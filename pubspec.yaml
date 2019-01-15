@@ -18,6 +18,7 @@ dependencies:
   redux: ^3.0.0
   flutter_redux: ^0.5.0
   sqflite: any
+  flutter_stetho: ^0.2.2
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.

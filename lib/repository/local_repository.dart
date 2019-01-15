@@ -10,13 +10,22 @@ class LocalRepository implements DataRepository{
 
   @override
   Future<List<Product>> loadAllProducts() async {
+    
     final products = await DbHelper.db.getAllproduct();
+    print("load product : "+products.length.toString());
     return products;
   }
 
   @override
-  Future saveProduct(Product product) async {
-    final prod = await DbHelper.db.insertProduct(product);
+  Future saveProduct(List<Product> products) async {
+    //print("Name : "+product.name+" price : "+product.price.toString()+"  qty : "+product.qty.toString());
+    final prod = await DbHelper.db.insertProduct(products[0]);
+    return prod;
+  }
+
+  @override
+  Future<List<Product>> searchProducts(String name) async{
+     final prod = await DbHelper.db.searchProduct(name);
     return prod;
   }
 

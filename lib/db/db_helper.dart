@@ -32,6 +32,7 @@ class DbHelper{
   }
 
   insertProduct(Product product) async{
+    
     final db = await database;
     var raw = await db.rawInsert(
       "INSERT into Product (product_name, qty, price) VALUES (?, ?, ?)",
@@ -42,10 +43,21 @@ class DbHelper{
 
   Future<List<Product>> getAllproduct() async {
     final db = await database;
-    var res = await db.query("Product");
-    List<Product> list =
-        res.isNotEmpty ? res.map((c) => Product.fromMap(c)).toList() : [];
+    var res = await db.rawQuery("SELECT * FROM Product");
+    print("load product "+res.isEmpty.toString());
+    List<Product> list =res.isNotEmpty ? res.map((c) => Product.fromMap(c)).toList() : [];
+    
     return list;
   }
+
+  Future<List<Product>> searchProduct(String name) async{
+
+    final db = await database;
+    var res = await db.rawQuery("SELECT * FROM Product WHERE product_name like '%"+name+"%'");
+    List<Product> list =res.isNotEmpty ? res.map((c) => Product.fromMap(c)).toList() : [];
+    
+    return list;
+  }
+
 
 }

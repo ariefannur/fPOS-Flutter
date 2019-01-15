@@ -16,6 +16,10 @@ class UpdateProductAction{
   UpdateProductAction(this.id, this.product);
 }
 
+class LoadProductAction {}
+
+class SearchProductAction {}
+
 class ProductLoadedAction{
   final List<Product> products;
   ProductLoadedAction(this.products);

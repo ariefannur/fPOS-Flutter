@@ -4,5 +4,7 @@ abstract class DataRepository{
 
   Future<List<Product>> loadAllProducts();
 
-  Future saveProduct(Product product);
+  Future<List<Product>> searchProducts(String name);
+
+  Future saveProduct(List<Product> products);
 }

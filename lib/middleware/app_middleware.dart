@@ -11,18 +11,23 @@ List<Middleware<AppState>> createStoreMiddleware([
 
   final saveProduct = _createProduct(dataRepo);
   final loadProducts = _loadProducts(dataRepo);
+  final searchProducts = _searchProduct(dataRepo);
 
   return[
     TypedMiddleware<AppState, AddProductAction>(saveProduct),
-    TypedMiddleware<AppState, ProductLoadedAction>(loadProducts),
+    TypedMiddleware<AppState, LoadProductAction>(loadProducts),
+    TypedMiddleware<AppState, SearchProductAction>(searchProducts),
   ];
 }
 
 Middleware<AppState> _createProduct(DataRepository dataRepo){
   return (Store<AppState> store, action, NextDispatcher next) {
     next(action);
+    final productList =  store.state.products;
+    final product = productList[productList.length-1];
+    print("save product qty : "+product.qty.toString()+" price : "+product.price.toString());
     dataRepo.saveProduct(
-        store.state.product
+       productList
     );
   };
 }
@@ -30,6 +35,25 @@ Middleware<AppState> _createProduct(DataRepository dataRepo){
 Middleware<AppState> _loadProducts(DataRepository dataRepo){
   return (Store<AppState> store, action, NextDispatcher next) {
     next(action);
-    dataRepo.loadAllProducts();
+    
+    dataRepo.loadAllProducts().then(
+      (products){
+        print("load product dispatch :: "+products.length.toString());
+        store.dispatch(
+          ProductLoadedAction(
+              products
+          )
+        );
+      }
+    );
+  };
+}
+
+
+Middleware<AppState> _searchProduct(DataRepository dataRepo){
+  return (Store<AppState> store, action, NextDispatcher next) {
+    next(action);
+    print("load product");
+    dataRepo.searchProducts("a");
   };
 }

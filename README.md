@@ -1,4 +1,4 @@
-# redux_exercise
+# fPOS-Flutter
 
 A new Flutter project.
 
