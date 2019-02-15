@@ -8,6 +8,10 @@ AppState appReducer(AppState state, action){
   return AppState(
     isLoading: loadingReducer(state.isLoading, action),
     products: productReducer(state.products, action),
+    product: oneProductReducer(state.product, action),
+    transactions: transactionRecuder(state.transactions, action),
+    bills: billRecuder(state.bills, action),
+    query: queryReducer(state.query, action)
   );
   
 }

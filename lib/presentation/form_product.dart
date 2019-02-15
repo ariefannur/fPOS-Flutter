@@ -6,10 +6,10 @@ import 'package:redux_exercise/models/app_state.dart';
 import 'package:redux_exercise/models/product.dart';
 
 class AddProductForm extends StatelessWidget{
+
   @override
   Widget build(BuildContext context) {
     
-
      return StoreConnector<AppState, OnSaveCallback>(
        converter: (Store<AppState> store){
           return (name, prize, qty ){
@@ -31,7 +31,7 @@ class AddProductForm extends StatelessWidget{
     }
        
      
-     }
+}
      
 typedef OnSaveCallback = Function(String name, int prize, int qty);
 

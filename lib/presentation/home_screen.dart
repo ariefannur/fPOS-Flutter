@@ -6,6 +6,7 @@ import 'package:redux/redux.dart';
 import 'package:redux_exercise/models/app_route.dart';
 import 'package:redux_exercise/models/app_state.dart';
 import 'package:redux_exercise/models/product.dart';
+import 'package:redux_exercise/presentation/transaction_view.dart';
 
 class HomeScreen extends StatefulWidget{
 
@@ -15,10 +16,19 @@ class HomeScreen extends StatefulWidget{
   @override
   _HomeScreen createState() => _HomeScreen();
 
+
 }
 
 class _HomeScreen extends State<HomeScreen>{
  
+  final List<Widget> listWidget = [
+    TransactionView(),
+    Home()
+  ];
+
+  var selectedId = 0;
+  var titleButton = "Add Transaction";
+
   @override
     void initState() {
       widget.onInit();
@@ -32,14 +42,42 @@ class _HomeScreen extends State<HomeScreen>{
         title: Text("fPOS"),
       ),
       body: Scaffold(
-        body : Home(),
-        floatingActionButton: FloatingActionButton(
-        onPressed: (){
-           Navigator.pushNamed(context, AppRoute.addProduct);
-        },
-        child: Icon(Icons.add),
-    
-      ),
+        body : listWidget[selectedId],
+        bottomNavigationBar: BottomNavigationBar(
+          currentIndex: selectedId,
+          items: [
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home),
+              title: Text("Transaction")
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.fastfood),
+              title: Text('Product')
+            ),
+          ],
+          onTap: (index){
+              setState(() {
+                selectedId = index;
+                if(index == 0)
+                  titleButton = "Add Transaction";
+                else
+                  titleButton = "Add Product";
+                  
+              });
+          },
+        ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+        floatingActionButton: FloatingActionButton.extended(
+          elevation: 4.0,
+          icon: const Icon(Icons.add),
+          label: Text(titleButton),
+          onPressed: (){
+            if(selectedId == 0)
+              Navigator.pushNamed(context, AppRoute.addTransaction);
+            else
+              Navigator.pushNamed(context, AppRoute.addProduct);
+          },
+        ),
       ),
       
     );

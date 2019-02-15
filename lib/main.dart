@@ -5,6 +5,7 @@ import 'package:redux_exercise/actions/action.dart';
 import 'package:redux_exercise/models/app_route.dart';
 import 'package:redux_exercise/models/app_state.dart';
 import 'package:redux_exercise/presentation/form_product.dart';
+import 'package:redux_exercise/presentation/form_transaction.dart';
 import 'package:redux_exercise/presentation/home_screen.dart';
 import 'package:redux_exercise/reducers/app_reducer.dart';
 import 'package:redux_exercise/middleware/app_middleware.dart';
@@ -42,7 +43,12 @@ class MyApp extends StatelessWidget {
             },
             AppRoute.addProduct: (context) {
             return AddProductForm();
-          },
+            },
+            AppRoute.addTransaction:(context){
+              return FormTransaction(setUp:(){
+                  StoreProvider.of<AppState>(context).dispatch(LoadProductAction());
+              });
+            }
           }   
         ),
       );

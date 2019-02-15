@@ -1,4 +1,6 @@
 import 'package:redux_exercise/db/db_helper.dart';
+import 'package:redux_exercise/models/bill.dart';
+import 'package:redux_exercise/models/transaction.dart';
 import 'package:redux_exercise/repository/data_repo.dart';
 import 'package:redux_exercise/models/product.dart';
 import 'dart:async';
@@ -17,9 +19,9 @@ class LocalRepository implements DataRepository{
   }
 
   @override
-  Future saveProduct(List<Product> products) async {
-    //print("Name : "+product.name+" price : "+product.price.toString()+"  qty : "+product.qty.toString());
-    final prod = await DbHelper.db.insertProduct(products[0]);
+  Future saveProduct(Product product) async {
+    print("Name : "+product.name+" price : "+product.price.toString()+"  qty : "+product.qty.toString());
+    final prod = await DbHelper.db.insertProduct(product);
     return prod;
   }
 
@@ -27,6 +29,24 @@ class LocalRepository implements DataRepository{
   Future<List<Product>> searchProducts(String name) async{
      final prod = await DbHelper.db.searchProduct(name);
     return prod;
+  }
+
+  @override
+  Future saveItemTransaction(List<TransactionData> data, int bill) async{
+    final transaction = await DbHelper.db.insertTransaction(data[0], bill);
+    return transaction;
+  }
+
+  @override
+  Future saveBill(Bill billData) async{
+    final bill = await DbHelper.db.insertBill(billData);
+    return bill;
+  }
+
+  @override
+  Future<Product> getProducts(String name) async{
+    final product = await DbHelper.db.getProduct(name);
+    return product;
   }
 
 
