@@ -45,7 +45,7 @@ class MyApp extends StatelessWidget {
             return AddProductForm();
             },
             AppRoute.addTransaction:(context){
-              return FormTransaction(setUp:(){
+              return DataTransaction(setUp:(){
                   StoreProvider.of<AppState>(context).dispatch(LoadProductAction());
               });
             }

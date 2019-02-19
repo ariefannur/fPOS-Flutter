@@ -63,7 +63,7 @@ class DbHelper{
     final db = await database;
     var raw = await db.rawInsert(
       "INSERT into ItemTransaction (product_id, count, bill_id, item_price) VALUES (?, ?, ?, ?)",
-      [transaction.productId, transaction.count, transaction.itemPrice]
+      [transaction.productId, transaction.count, billId, transaction.itemPrice]
     );
     return raw;
   }
@@ -75,6 +75,7 @@ class DbHelper{
       "INSERT into Bill (date, total_price) VALUES (?, ?)",
       [bill.date, bill.totalPrice]
     );
+    print("bill id "+raw.toString());
     return raw;
 
   }

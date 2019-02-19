@@ -11,8 +11,8 @@ class AppState{
   final List<TransactionData> transactions;
   final List<Bill> bills;
   final String query;
+  final int idBill;
 
-  AppState({this.isLoading = false, this.products = const [], this.product, this.transactions, this.bills, this.query});
-
+  AppState({this.isLoading = false, this.products = const [], this.product, this.transactions, this.bills, this.query, this.idBill});
   factory AppState.loading() => AppState(isLoading: true);
 }

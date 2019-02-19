@@ -30,7 +30,10 @@ class GetProductAction {
 class QueryAction{
   
 }
-
+class InsertedIdBill{
+  final int insertedId;
+  InsertedIdBill(this.insertedId);
+}
 class GetOneProductAction {
   final Product product;
   GetOneProductAction(this.product);
@@ -42,6 +45,9 @@ class SearchedProductAction {
 }
 
 class SaveTransactionAction {}
+
+
+class SaveBill{}
 
 class ProductLoadedAction{
   final List<Product> products;

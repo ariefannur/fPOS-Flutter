@@ -4,6 +4,8 @@ import 'package:redux_exercise/repository/data_repo.dart';
 import 'package:redux_exercise/repository/local_repository.dart';
 import 'package:redux_exercise/actions/action.dart';
 
+var billId = 0;
+
 List<Middleware<AppState>> createStoreMiddleware([
   DataRepository dataRepo = const LocalRepository()
 ]){
@@ -13,13 +15,15 @@ List<Middleware<AppState>> createStoreMiddleware([
   final searchProducts = _searchProduct(dataRepo);
   final getProduct = _getProduct(dataRepo);
   final saveTransaction = _saveTransaction(dataRepo);
-
+  final saveBill = _saveBill(dataRepo);
+  
   return[
     TypedMiddleware<AppState, AddProductAction>(saveProduct),
     TypedMiddleware<AppState, LoadProductAction>(loadProducts),
     TypedMiddleware<AppState, SearchProductAction>(searchProducts),
-    TypedMiddleware<AppState, SaveTransactionAction>(saveTransaction),
+    TypedMiddleware<AppState, TransactionLoadedAction>(saveTransaction),
     TypedMiddleware<AppState, GetProductAction>(getProduct),
+    TypedMiddleware<AppState, BillLoadedAction>(saveBill),
   ];
 }
 
@@ -39,7 +43,19 @@ Middleware<AppState> _createProduct(DataRepository dataRepo){
 Middleware<AppState> _saveTransaction(DataRepository dataRepo){
 return (Store<AppState> store, action, NextDispatcher next) {
     next(action);
-    dataRepo.saveItemTransaction(store.state.transactions, store.state.bills[0].id);
+    dataRepo.saveItemTransaction(store.state.transactions, store.state.idBill);
+  };
+}
+
+Middleware<AppState> _saveBill(DataRepository dataRepo){
+return (Store<AppState> store, action, NextDispatcher next) {
+    next(action);
+    var length =store.state.bills.length -1;
+     dataRepo.saveBill(store.state.bills[length]).then( (id) {
+        print("id bill "+id.toString());
+        store.dispatch(InsertedIdBill(id));
+     }
+     );
   };
 }
 

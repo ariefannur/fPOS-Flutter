@@ -29,6 +29,14 @@ final oneProductReducer = combineReducers<Product>([
  TypedReducer<Product, GetOneProductAction>(_getProduct),
 ]);
 
+final idLastInseted = combineReducers<int>([
+  TypedReducer<int, InsertedIdBill>(_getLastId),
+]);
+
+int _getLastId(int id, InsertedIdBill action){
+  return action.insertedId;
+}
+
 String _setQuery(String query, action) {
   return query;
 }
@@ -46,11 +54,11 @@ Product _getProduct(Product product, GetOneProductAction action){
 }
 
 List<TransactionData> _addTransaction(List<TransactionData> transaction, TransactionLoadedAction action){
-  return List.from(transaction)..add(action.transaction[0]);
+  return List.from(action.transaction);
 }
 
 List<Bill> _addBill(List<Bill> bills, BillLoadedAction action){
-  return List.from(bills)..add(action.bills[0]);
+  return action.bills;
 }
 
 List<Product> _getAll(List<Product> products, ProductLoadedAction action){

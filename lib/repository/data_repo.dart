@@ -12,7 +12,7 @@ abstract class DataRepository{
 
   Future saveProduct(Product products);
 
-  Future saveBill(Bill bill);
+  Future<int> saveBill(Bill bill);
 
   Future saveItemTransaction(List<TransactionData> data, int bill);
 }
