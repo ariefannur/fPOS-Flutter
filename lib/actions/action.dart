@@ -46,6 +46,7 @@ class SearchedProductAction {
 
 class SaveTransactionAction {}
 
+class LoadBills{}
 
 class SaveBill{}
 

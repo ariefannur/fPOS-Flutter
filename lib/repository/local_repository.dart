@@ -53,6 +53,19 @@ class LocalRepository implements DataRepository{
     return product;
   }
 
+  @override
+  Future<List<Bill>> getBills() async{
+    final bills = await DbHelper.db.getBills();
+    print("get bills : "+bills.toString());
+    return bills;
+  }
+
+  @override
+  Future<List<TransactionData>> getTransactionDetail(int idBill) async{
+    final transactions = await DbHelper.db.getDetailTransaction(idBill);
+    return transactions;
+  }
+
 
 
 }

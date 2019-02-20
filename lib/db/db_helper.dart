@@ -109,4 +109,22 @@ Future<Product> getProduct(String name) async{
     return list[0];
   }
 
+  Future<List<Bill>> getBills() async{
+
+    final db = await database;
+    var res = await db.rawQuery("SELECT * FROM Bill");
+    List<Bill> list =res.isNotEmpty ? res.map((c) => Bill.fromMap(c)).toList() : [];
+    
+    return list;
+  }
+
+  Future<List<TransactionData>> getDetailTransaction(int idBill) async {
+    final db = await database;
+    var res = await db.rawQuery("SELECT * FROM ItemTransaction WHERE bill_id = "+idBill.toString());
+    List<TransactionData> list =res.isNotEmpty ? res.map((c) => TransactionData.fromMap(c)).toList() : [];
+    
+    return list;
+
+  }
+
 }

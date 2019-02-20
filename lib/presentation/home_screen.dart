@@ -47,7 +47,7 @@ class _HomeScreen extends State<HomeScreen>{
           currentIndex: selectedId,
           items: [
             BottomNavigationBarItem(
-              icon: Icon(Icons.home),
+              icon: Icon(Icons.assignment),
               title: Text("Transaction")
             ),
             BottomNavigationBarItem(

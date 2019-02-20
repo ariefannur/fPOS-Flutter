@@ -16,6 +16,8 @@ List<Middleware<AppState>> createStoreMiddleware([
   final getProduct = _getProduct(dataRepo);
   final saveTransaction = _saveTransaction(dataRepo);
   final saveBill = _saveBill(dataRepo);
+  final getBills = _getBills(dataRepo);
+  final getTransactions = _getTransactions(dataRepo);
   
   return[
     TypedMiddleware<AppState, AddProductAction>(saveProduct),
@@ -24,6 +26,8 @@ List<Middleware<AppState>> createStoreMiddleware([
     TypedMiddleware<AppState, TransactionLoadedAction>(saveTransaction),
     TypedMiddleware<AppState, GetProductAction>(getProduct),
     TypedMiddleware<AppState, BillLoadedAction>(saveBill),
+    TypedMiddleware<AppState, LoadBills>(getBills),
+    TypedMiddleware<AppState, TransactionLoadedAction>(getTransactions),
   ];
 }
 
@@ -74,6 +78,24 @@ Middleware<AppState> _loadProducts(DataRepository dataRepo){
         );
       }
     );
+  };
+}
+
+Middleware<AppState> _getBills(DataRepository dataRepo){
+ return (Store<AppState> store, action, NextDispatcher next) {
+    next(action);
+    dataRepo.getBills().then(
+      (bills){
+        store.dispatch(BillLoadedAction(bills));
+      }
+    );
+  };
+}
+
+Middleware<AppState> _getTransactions(DataRepository dataRepo){
+ return (Store<AppState> store, action, NextDispatcher next) {
+    next(action);
+    
   };
 }
 

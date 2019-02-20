@@ -1,5 +1,5 @@
 name: redux_exercise
-description: A new Flutter project.
+description: Flutter POS apps.
 
 # The following defines the version and build number for your application.
 # A version number is three numbers separated by dots, like 1.2.43
@@ -20,6 +20,7 @@ dependencies:
   sqflite: any
   flutter_stetho: ^0.2.2
   autocomplete_textfield: 1.6.4
+  intl: ^0.15.7
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.

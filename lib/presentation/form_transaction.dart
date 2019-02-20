@@ -112,6 +112,8 @@ class _Transaction extends State<FormTransaction> {
                 }));
 
                 widget.onSave(lisProduct, countTotal());
+
+                Navigator.pop(context);
               }
             },
           )

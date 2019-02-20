@@ -37,6 +37,7 @@ class MyApp extends StatelessWidget {
               return HomeScreen(
                 onInit: (){
                   print("init home : ");
+                  StoreProvider.of<AppState>(context).dispatch(LoadBills());
                    StoreProvider.of<AppState>(context).dispatch(LoadProductAction());
                 },
               );
