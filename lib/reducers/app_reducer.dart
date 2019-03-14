@@ -11,6 +11,7 @@ AppState appReducer(AppState state, action){
     product: oneProductReducer(state.product, action),
     transactions: transactionRecuder(state.transactions, action),
     bills: billRecuder(state.bills, action),
+    insertedBill: oneBillReducer(state.insertedBill, action),
     query: queryReducer(state.query, action),
     idBill: idLastInseted(state.idBill, action)
   );

@@ -4,6 +4,7 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux_exercise/actions/action.dart';
 import 'package:redux_exercise/models/app_route.dart';
 import 'package:redux_exercise/models/app_state.dart';
+import 'package:redux_exercise/presentation/detail_bill.dart';
 import 'package:redux_exercise/presentation/form_product.dart';
 import 'package:redux_exercise/presentation/form_transaction.dart';
 import 'package:redux_exercise/presentation/home_screen.dart';
@@ -12,7 +13,7 @@ import 'package:redux_exercise/middleware/app_middleware.dart';
 import 'package:flutter_stetho/flutter_stetho.dart';
 
 void main() {
-  Stetho.initialize();
+ Stetho.initialize();
   runApp(MyApp());
 }
   
@@ -37,13 +38,20 @@ class MyApp extends StatelessWidget {
               return HomeScreen(
                 onInit: (){
                   print("init home : ");
-                  StoreProvider.of<AppState>(context).dispatch(LoadBills());
+                   StoreProvider.of<AppState>(context).dispatch(LoadBills());
                    StoreProvider.of<AppState>(context).dispatch(LoadProductAction());
                 },
               );
             },
             AppRoute.addProduct: (context) {
             return AddProductForm();
+            },
+            AppRoute.detailTransaction:(context){
+              return DetailBill(
+                setUp: (){
+                 
+                },
+              );
             },
             AppRoute.addTransaction:(context){
               return DataTransaction(setUp:(){

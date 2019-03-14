@@ -25,9 +25,9 @@ List<Middleware<AppState>> createStoreMiddleware([
     TypedMiddleware<AppState, SearchProductAction>(searchProducts),
     TypedMiddleware<AppState, TransactionLoadedAction>(saveTransaction),
     TypedMiddleware<AppState, GetProductAction>(getProduct),
-    TypedMiddleware<AppState, BillLoadedAction>(saveBill),
+    TypedMiddleware<AppState, BillInsertAction>(saveBill),
     TypedMiddleware<AppState, LoadBills>(getBills),
-    TypedMiddleware<AppState, TransactionLoadedAction>(getTransactions),
+    TypedMiddleware<AppState, GetDetailTranscationAction>(getTransactions),
   ];
 }
 
@@ -47,17 +47,26 @@ Middleware<AppState> _createProduct(DataRepository dataRepo){
 Middleware<AppState> _saveTransaction(DataRepository dataRepo){
 return (Store<AppState> store, action, NextDispatcher next) {
     next(action);
-    dataRepo.saveItemTransaction(store.state.transactions, store.state.idBill);
+    var idBill = store.state.idBill;
+    var idproduct =store.state.transactions[0].productId;
+    print("save id id bill "+idBill.toString()+" id product "+idproduct.toString());
+    dataRepo.saveItemTransaction(store.state.transactions);
   };
 }
 
 Middleware<AppState> _saveBill(DataRepository dataRepo){
 return (Store<AppState> store, action, NextDispatcher next) {
     next(action);
-    var length =store.state.bills.length -1;
-     dataRepo.saveBill(store.state.bills[length]).then( (id) {
-        print("id bill "+id.toString());
-        store.dispatch(InsertedIdBill(id));
+     dataRepo.saveBill(store.state.insertedBill).then( (id) {
+        print("save id bill "+id.toString());
+        //store.dispatch(InsertedIdBill(id));
+        
+        var list =store.state.transactions;
+        list.forEach((transaction){
+          transaction.billId = id;
+        });
+        store.dispatch(TransactionLoadedAction(list));
+        
      }
      );
   };
@@ -70,7 +79,9 @@ Middleware<AppState> _loadProducts(DataRepository dataRepo){
     
     dataRepo.loadAllProducts().then(
       (products){
-        print("load product dispatch :: "+products.length.toString());
+        products.forEach((p){
+            print("pruduct all "+p.id.toString());
+        });
         store.dispatch(
           ProductLoadedAction(
               products
@@ -95,7 +106,13 @@ Middleware<AppState> _getBills(DataRepository dataRepo){
 Middleware<AppState> _getTransactions(DataRepository dataRepo){
  return (Store<AppState> store, action, NextDispatcher next) {
     next(action);
-    
+    dataRepo.getTransactionDetail(store.state.idBill).then(
+      (products){
+        store.dispatch(
+          TransactionLoadedAction(products)
+        );
+      }
+    );
   };
 }
 

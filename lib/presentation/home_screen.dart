@@ -3,10 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
+import 'package:redux_exercise/actions/action.dart';
 import 'package:redux_exercise/models/app_route.dart';
 import 'package:redux_exercise/models/app_state.dart';
 import 'package:redux_exercise/models/product.dart';
 import 'package:redux_exercise/presentation/transaction_view.dart';
+import 'package:redux_exercise/presentation/form_transaction.dart';
 
 class HomeScreen extends StatefulWidget{
 
@@ -70,11 +72,16 @@ class _HomeScreen extends State<HomeScreen>{
         floatingActionButton: FloatingActionButton.extended(
           elevation: 4.0,
           icon: const Icon(Icons.add),
-          label: Text(titleButton),
+          label: Text(titleButton, style: TextStyle(fontSize: 12.0),),
           onPressed: (){
-            if(selectedId == 0)
-              Navigator.pushNamed(context, AppRoute.addTransaction);
-            else
+            if(selectedId == 0){
+              //Navigator.pushNamed(context, AppRoute.addTransaction);
+               Navigator.push(context,MaterialPageRoute(builder: (context) => DataTransaction(setUp: (){
+                            StoreProvider.of<AppState>(context).dispatch(LoadProductAction());
+                          },
+                  )
+                ));
+            }else
               Navigator.pushNamed(context, AppRoute.addProduct);
           },
         ),
@@ -105,10 +112,10 @@ class _Home extends State<Home>{
     return StoreConnector<AppState, _ViewModel>(
             converter: _ViewModel.fromStore,
             builder: (context, vm){
-              print("list all "+vm.products.length.toString());
               return ListView.builder(
               itemCount: vm.products.length,
               itemBuilder: (BuildContext context, int index){
+              
                 final product = vm.products[index];
                 return ItemList(
                   product: product,
@@ -133,7 +140,11 @@ class _Home extends State<Home>{
     });
     
     static _ViewModel fromStore(Store<AppState> store){
-      print("list store : "+store.state.products.length.toString());
+      //print("list store : "+store.state.products.length.toString());
+      store.state.products.forEach((product) {
+        print("product : "+product.id.toString()+" name : "+product.name);
+      });
+
       return _ViewModel(
         isLoading: store.state.isLoading,
         products: store.state.products,
@@ -148,7 +159,7 @@ class _Home extends State<Home>{
 
   @override
   Widget build(BuildContext context) {
-  
+    
     return Container(
           margin: new EdgeInsets.only(top: 8.0, left:16.0, right:16.0, bottom:8.0) ,
           child: Column(

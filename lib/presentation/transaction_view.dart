@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:redux/redux.dart';
+import 'package:redux_exercise/actions/action.dart';
+import 'package:redux_exercise/presentation/detail_bill.dart';
 import 'package:redux_exercise/models/bill.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux_exercise/models/app_state.dart';
@@ -12,7 +14,10 @@ class TransactionView extends StatefulWidget{
 
 }
 
+
 class _TransactionState extends State<TransactionView>{
+
+
   @override
   Widget build(BuildContext context) {
 
@@ -20,17 +25,43 @@ class _TransactionState extends State<TransactionView>{
             converter: ViewModel.fromStore,
             builder: (context, vm){
               //print("list all bills "+vm.bills.length.toString());
-              return ListView.builder(
-              itemCount: vm.bills != null ? vm.bills.length : 0,
-              itemBuilder: (BuildContext context, int index){
-                final bill = vm.bills[index];
-                return ItemList(
-                  bill: bill,
-                );
-              },
+              return RefreshIndicator(
+              
+                onRefresh: _handleRefresh,
+                child: ListView.builder(
+                  itemCount: vm.bills != null ? vm.bills.length : 0,
+                  itemBuilder: (BuildContext context, int index){
+                    final bill = vm.bills[index];
+                    return GestureDetector(
+                      onTap: (){
+                          print("detail : "+bill.id.toString());
+                          StoreProvider.of<AppState>(context).dispatch(InsertedIdBill(bill.id));
+                          Navigator.push(context,MaterialPageRoute(builder: (context) => DetailBill(setUp: (){
+                            StoreProvider.of<AppState>(context).dispatch(GetDetailTranscationAction(idBill:bill.id));
+                          },)
+                          ));
+
+                      },
+                      child: ItemList(
+                        bill: bill,
+                      ),
+                    );
+                    
+                  },
+                  ),
               );
+              
+              
             }
           );
+  }
+
+  Future<Null> _handleRefresh() async {
+    await new Future.delayed(new Duration(seconds: 2));
+    var action = LoadBills();
+    StoreProvider.of<AppState>(context).dispatch(action);
+  
+    return null;
   }
 
 }

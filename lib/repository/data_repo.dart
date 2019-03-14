@@ -14,7 +14,7 @@ abstract class DataRepository{
 
   Future<int> saveBill(Bill bill);
 
-  Future saveItemTransaction(List<TransactionData> data, int bill);
+  Future saveItemTransaction(List<TransactionData> data);
 
   Future<List<Bill>> getBills();
 

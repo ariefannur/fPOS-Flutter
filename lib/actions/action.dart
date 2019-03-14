@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:redux_exercise/models/bill.dart';
 import 'package:redux_exercise/models/product.dart';
 import 'package:redux_exercise/models/transaction.dart';
@@ -46,18 +48,35 @@ class SearchedProductAction {
 
 class SaveTransactionAction {}
 
-class LoadBills{}
+class LoadBills{
+  final Completer<Null> completer;
+
+  LoadBills({Completer completer})
+    : this.completer = completer ?? Completer<Null>();
+}
 
 class SaveBill{}
+
+class GetDetailTranscationAction{
+  final int idBill;
+  GetDetailTranscationAction({this.idBill});
+}
 
 class ProductLoadedAction{
   final List<Product> products;
   ProductLoadedAction(this.products);
 }
 
+
 class BillLoadedAction{
   final List<Bill> bills;
   BillLoadedAction(this.bills);
+}
+
+class BillInsertAction{
+  final Bill bill;
+  final List<TransactionData> transaction;
+  BillInsertAction(this.bill, this.transaction);
 }
 
 class TransactionLoadedAction{

@@ -32,9 +32,9 @@ class LocalRepository implements DataRepository{
   }
 
   @override
-  Future saveItemTransaction(List<TransactionData> data, int bill) async{
+  Future saveItemTransaction(List<TransactionData> data) async{
     var insert =  data.forEach((data) async =>
-         await DbHelper.db.insertTransaction(data, bill)
+         await DbHelper.db.insertTransaction(data)
     );
 
     return insert;

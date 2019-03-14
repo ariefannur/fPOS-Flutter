@@ -27,21 +27,20 @@ class DataTransaction extends StatelessWidget{
            print("list product "+list.length.toString());
            var date = new DateTime.now().millisecondsSinceEpoch;
            var bill = new Bill(id:0, date:date, totalPrice: total);
-           var listBill = [bill];
-            store.dispatch(BillLoadedAction(listBill));
+            
 
             var listTransaction = List<TransactionData>();
         
             for(int i=0; i < list.length ; i++){
                 var product =list[i];
                 var itemCount =product.qty * product.price;
+                print("PRODUCT ID "+product.id.toString());
                 var transc = new TransactionData(id: i, productId: product.id, count: product.qty, itemPrice: itemCount);
                 listTransaction.add(transc);
             }
 
-            print("list transaction "+listTransaction.length.toString()); 
+            store.dispatch(BillInsertAction(bill, listTransaction));
 
-            store.dispatch(TransactionLoadedAction(listTransaction));
           };
        },
        builder: (context, onSave){
@@ -90,7 +89,10 @@ class _Transaction extends State<FormTransaction> {
   Widget build(BuildContext context) {
     List<String> names = List<String>();
     localProductList = StoreProvider.of<AppState>(context).state.products;
-    localProductList.forEach((d) => names.add(d.name));
+    localProductList.forEach((d){ 
+      print("id product "+d.id.toString());
+      names.add(d.name);
+    });
 
     return Scaffold(
       key: _scaffoldKey,
@@ -113,6 +115,7 @@ class _Transaction extends State<FormTransaction> {
 
                 widget.onSave(lisProduct, countTotal());
 
+                Navigator.pop(context);
                 Navigator.pop(context);
               }
             },
@@ -234,8 +237,10 @@ class _Transaction extends State<FormTransaction> {
                                   print("qty " + qty.toString());
                                   var product = Product();
                                   product.setData(id, textCurrent, price, qty);
+                                  print("Produt add id "+product.id.toString());
                                   lisProduct.add(product);
                                   totalNota = countTotal();
+                                  Navigator.pop(context);
                                 });
                               },
                             ),
@@ -283,6 +288,15 @@ class _Transaction extends State<FormTransaction> {
         lisProduct.length.toString());
     return count;
   }
+}
+
+class ProductList extends StatelessWidget{
+  @override
+  Widget build(BuildContext context) {
+    
+    return null;
+  }
+
 }
 
 

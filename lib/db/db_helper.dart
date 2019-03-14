@@ -58,12 +58,12 @@ class DbHelper{
     return raw;
   }
 
- insertTransaction(TransactionData transaction, int billId) async{
+ insertTransaction(TransactionData transaction) async{
     
     final db = await database;
     var raw = await db.rawInsert(
       "INSERT into ItemTransaction (product_id, count, bill_id, item_price) VALUES (?, ?, ?, ?)",
-      [transaction.productId, transaction.count, billId, transaction.itemPrice]
+      [transaction.productId, transaction.count, transaction.billId, transaction.itemPrice]
     );
     return raw;
   }
@@ -120,7 +120,7 @@ Future<Product> getProduct(String name) async{
 
   Future<List<TransactionData>> getDetailTransaction(int idBill) async {
     final db = await database;
-    var res = await db.rawQuery("SELECT * FROM ItemTransaction WHERE bill_id = "+idBill.toString());
+    var res = await db.rawQuery("SELECT id, product_id, count, item_price, bill_id, product.product_name as name FROM ItemTransaction INNER JOIN Product ON ItemTransaction.product_id = Product.id WHERE bill_id = "+idBill.toString());
     List<TransactionData> list =res.isNotEmpty ? res.map((c) => TransactionData.fromMap(c)).toList() : [];
     
     return list;
